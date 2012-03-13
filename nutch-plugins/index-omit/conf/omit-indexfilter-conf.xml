@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	
+<!-- List of properties -->
+<!-- (R)filteringType: Defines the type of filtering. If it's going to be a whitelist or a blacklist filtering (WHITELIST, BLACKLIST) -->
+	
+<omitIndexingFilterConfiguration filteringType="WHITELIST">
+
+	<!-- List of properties -->
+	<!-- (R)target: Defines the target against which the regex should be matched (URL, META_FIELD_PRESENT) -->
+	
+	<!-- ONLY IF target=URL -->
+	<!-- (R)regex: Defines the regex that should be used for matching -->
+	
+	<!-- ONLY IF target=META_FIELD_PRESENT -->
+	<!-- (R)name: Defines the name of the meta field that must be contained -->
+	<omitIndexingFilterConfigurationEntry target="URL" regex="^http://([a-z0-9]*\.)*nutch.apache.org/" />
+	
+</omitIndexingFilterConfiguration>

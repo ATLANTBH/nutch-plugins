@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	
+<xpathFilterConfiguration>
+
+	<!-- List of properties -->
+	<!-- (O)pageUrlFilterRegex: If supplied the xpath-field mapping will be evaluated only on the urls that match the regex (DEFAULT: ALL URLS WILL BE INCLUDED) -->
+	<!-- (O)pageContentFilterXPath: Evaluate the pageContentFilterRegex on the data of this xpath expression -->
+	<!-- (O)concatPageContentFilterXPathData: If the xpath return multiple nodes defines if they should be concatenated (DEFAULT: FALSE) -->
+	
+	<!-- ONLY IF pageContentFilterXPath DEFINED -->	
+	<!-- (R)pageContentFilterRegex: If supplied the  xpath-field mapping will be evaluated on the pageContentFilterXPath retrieved data that matches the regex (DEFAULT: NO DEFAULT)-->
+	<!-- (O)trimPageContentFilterXPathData: Defines if the retrieved content xpath data should be trimmed (whitespace removal) (DEFAULT: TRUE) -->
+	
+	<!-- ONLY IF pageContentFilterXPath AND concatPageContentFilterXPathData DEFINED -->	
+	<!-- (O)concatPageContentFilterXPathDataDelimiter: The delimiter by which the nodes will be joined (DEFAULT: EMPTY STRING) -->
+	
+	<xpathIndexerProperties pageUrlFilterRegex="^http://([a-z0-9]*\.)*/" pageContentFilterXPath="" pageContentFilterRegex="" trimPageContentFilterXPathData="true" concatPageContentFilterXPathData="true" concatPageContentFilterXPathDataDelimiter=" ">
+	
+		<!-- List of properties -->
+		<!-- (R)name: The name of the filed that should be indexed with solr -->
+		<!-- (R)xPath: The xpath expression to fetch data from xml/html -->
+		<!-- (R)type: The data type the field should be indexed with (BOOLEAN, STRING, FLOAT, DOUBLE, INTEGER, LONG, DATE) -->	
+		<!-- (O)trimXPathData: Defines if the retrieved xpath data should be trimmed (whitespace removal) (DEFAULT: TRUE) -->
+		<!-- (O)concat: If the xpath return multiple nodes defines if they should be concatenated (DEFAULT: FALSE) -->
+		
+		<!-- ONLY IF type=DATE -->
+		<!-- (O)dateFormat: If the type is DATE the format of the date (DEFAULT: dd.MM.yyyy) -->
+		
+		<!-- ONLY IF concat DEFINED -->
+		<!-- (O)concatDelimiter: The delimiter by which the nodes will be joinded (DEFAULT: EMPTY STRING) -->
+		
+		<field name="title" xPath="//some_xpath" type="STRING" concat="false" concatDelimiter=" " trimXPathData="false"/>
+		<field name="date" xPath="//some_xpath" type="DATE" dateFormat="dd.MM.yyyy" />
+	</xpathIndexerProperties>
+	
+</xpathFilterConfiguration>

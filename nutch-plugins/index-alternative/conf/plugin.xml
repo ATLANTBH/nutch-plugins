@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin id="index-alternativedataflow" name="Apache Nutch Index Alternative Filter" version="1.4" provider-name="nutch.org">
+
+   	<runtime>
+      	<library name="index-alternativedataflow.jar">
+         	<export name="*"/>
+      	</library>
+      	<library name="log4j.jar"/>
+      	<library name="utils.jar"/>
+   	</runtime>
+
+   	<requires>
+      	<import plugin="nutch-extensionpoints"/>
+   	</requires>
+
+   	<extension id="org.apache.nutch.indexer" name="Nutch Alternative Indexing Filter" point="org.apache.nutch.indexer.IndexingFilter">
+      	<implementation id="com.atlantbh.nutch.index.alternativedataflow.AlternativeDataFlowIndexingFilter" class="com.atlantbh.nutch.index.alternativedataflow.AlternativeDataFlowIndexingFilter"/>
+   	</extension>
+
+</plugin>

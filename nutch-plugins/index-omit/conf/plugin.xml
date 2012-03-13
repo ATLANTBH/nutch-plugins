@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin id="index-omit" name="Apache Nutch Index Omit Filter" version="1.4" provider-name="nutch.org">
+
+   	<runtime>
+      	<library name="index-omit.jar">
+         	<export name="*"/>
+      	</library>
+      	<library name="log4j.jar"/>
+   	</runtime>
+
+   	<requires>
+      	<import plugin="nutch-extensionpoints"/>
+   	</requires>
+
+   	<extension id="org.apache.nutch.indexer" name="Nutch Omit Indexing Filter" point="org.apache.nutch.indexer.IndexingFilter">
+      	<implementation id="com.atlantbh.nutch.filter.index.omit.OmitIndexingFilter" class="com.atlantbh.nutch.filter.index.omit.OmitIndexingFilter"/>
+   	</extension>
+
+</plugin>

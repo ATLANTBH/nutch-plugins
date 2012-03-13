@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	
+<alternativeDataFlowIndexingFilterConfiguration>
+
+	<!-- List of properties -->
+	<!-- (R)dataFlow: Defines the alternative data flow (CSV) -->
+	
+	<!-- ONLY IF dataFlow=CSV -->
+	<!-- (R)destination: The path where the CSV should be placed -->
+	<!-- (R)name: Name of the CSV file. If already exists it will be overwritten -->
+	<!-- (O)seperator: The seperator that should be used when creating the CVS file	(DEFAULT: ,) -->
+	<!-- (O)quoteCharacter: The quoteCharacter that should be used when creating the CVS file	(DEFAULT: ") -->
+	<!-- (O)appendTimestamp: Defines if a timestamp should be appended to the filename. The time the csv file was created. (DEFAULT: false) -->
+	<!-- (O)addFieldNamesToFirstLine: Defines if the names of the field should be contained in the first line (DEFAULT: false)-->
+	<!-- (O)style: Defines the style of the csv file (UNIX, EXCEL - DEFAULT: UNIX) -->
+	
+	<!--
+	    UNIX style
+	        backslash escape character for quotes (\"), new lines (\n), and backslashes (\)
+	        Each record must be on its own line. If a field contains a new line, the new line must be escaped.
+	        Leading and trailing white space on an unquoted field is ignored.
+	        Compatible with standard unix text processing tools such as grep and sed that work on a line by line basis.	    
+    	Microsoft Excel Style
+	        Two quotes escape character ("" escapes "), no other characters are escaped.
+	        Compatible with Microsoft Excel and many other programs that have adopted the format for data import and export.
+	        Leading and trailing white space on an unquoted field is significant.
+	        Specified by RFC4180.
+	-->
+	
+	<alternativeDataFlowIndexingFilterConfigurationEntry dataFlow="CSV" destination="c:/csvs" name="csv" seperator="," quoteCharacter="&quot;" appendTimestamp="true" addFieldNamesToFirstLine="true">
+	
+		<!-- List of properties -->
+		<!-- (R)name: The name of the field that should be written -->
+		<!-- (O)alias: If supplied the alias will be used as filed name (DEFAULT: EMPTY)-->
+		<field name="fieldName" alias="alias"/>
+	</alternativeDataFlowIndexingFilterConfigurationEntry>
+	
+</alternativeDataFlowIndexingFilterConfiguration>

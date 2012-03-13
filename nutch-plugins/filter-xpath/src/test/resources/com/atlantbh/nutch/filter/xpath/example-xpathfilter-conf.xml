@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	
+<xpathFilterConfiguration>
+
+	<!--List of properties-->
+	<xpathIndexerProperties pageUrlFilterRegex="^http://([a-z0-9]*\.)*test.com/" pageContentFilterXPath="//bookstore/book/title" pageContentFilterRegex="Harry Potter|Learning XML">
+		<field name="testString" xPath="//bookstore/book/title" type="STRING" trimXPathData="true" />
+		<field name="testFloat" xPath="//bookstore/book/price" type="FLOAT" />
+		<field name="testDate" xPath="//bookstore/book/date" type="DATE" />
+	</xpathIndexerProperties>
+	
+</xpathFilterConfiguration>

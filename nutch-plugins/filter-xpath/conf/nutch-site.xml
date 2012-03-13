@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+	<property>
+		<name>filter.xpath.file</name>
+	  	<value>xpathfilter-conf.xml</value>
+	  	<description>
+	  		Configuration file of the xml/html parser/indexing filter. 
+	  		Definition of the xpath - field mappings.
+	  	</description>
+	</property>
+	
+	<!-- 
+	<property>
+		<name>plugin.includes</name>
+		<value>protocol-http|urlfilter-regex|parse-(html|tika)|filter-xpath|index-(basic|anchor)|scoring-opic|urlnormalizer-(pass|regex|basic)</value>
+		<description>Regular expression naming plugin directory names to
+		  include.  Any plugin not matching this expression is excluded.
+		  In any case you need at least include the nutch-extensionpoints plugin. By
+		  default Nutch includes crawling just HTML and plain text via HTTP,
+		  and basic indexing and search plugins. In order to use HTTPS please enable 
+		  protocol-httpclient, but be aware of possible intermittent problems with the 
+		  underlying commons-httpclient library.
+		</description>
+	</property>
+	-->
+	
+</configuration>

@@ -1,0 +1,689 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US"  xml:lang="en-US">
+
+<head profile="http://gmpg.org/xfn/11">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Amazon Elastic MapReduce &#8211; Part 2 (Amazon S3 Input Format) &laquo;  Atlantbh :: Software Development, Hadoop, Big Data, Cloud, Outsourcing</title>
+<meta name="description" content="Rich and diverse experience in providing Software Development, Outsourcing and Project Management. Highly educated, skilled, certified and battle tested. Committed to open source and best-of-breed." />
+<meta name="keywords" content="atlantbh,software development,outsourcing,bosnia and herzegovina,big data,hadoop,hbase,mobile,ios,android,windows mobile,qa,testing,apache,lucene,solr,mahout,map reduce,amazon,ec2,s3,cloudera,postgresql,mysql,cassandra,heroku,neo4j,hibernate,spring,axis,paypal,memcache,junit,jmock,puppet,jquery,jmeter,sopaui,ant,maven,ruby,rails,java" />
+
+<script type="text/javascript">
+		var root = 'http://www.atlantbh.com/wp-content/themes/atlantbh/';
+	</script>
+
+	<link rel="stylesheet" type="text/css" media="all" href="http://www.atlantbh.com/wp-content/themes/atlantbh/style.css" />
+	<link rel="apple-touch-icon" href="/abh.png" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="viewport" content="width = 1050, user-scalable = yes" />
+		<link rel="stylesheet" href="http://www.atlantbh.com/wp-content/themes/atlantbh/css/abh.css" media="screen" />
+		<link rel="stylesheet" href="http://www.atlantbh.com/wp-content/themes/atlantbh/css/jquery.lightbox-0.5.css" media="screen" />
+	 <!--[if IE 7]>
+    <link rel="stylesheet" media="screen" type="text/css" href="http://www.atlantbh.com/wp-content/themes/atlantbh/ie7.css" />
+    <![endif]-->
+	<script language="JavaScript" type="text/javascript" src="http://www.atlantbh.com/wp-content/themes/atlantbh/js/jquery-1.3.2.min.js"></script>
+	<script language="JavaScript" type="text/javascript" src="http://www.atlantbh.com/wp-content/themes/atlantbh/js/jquery.form.js"></script>
+	<script language="JavaScript" type="text/javascript" src="http://www.atlantbh.com/wp-content/themes/atlantbh/js/jquery.lightbox-0.5.min.js">
+	
+	<!-- lightbox initialize script -->
+	<script type="text/javascript">
+		$(function() {
+		   $('a.lightbox').lightBox();
+		});
+	 </script>
+	<!-- ajax contact form -->
+	 <script type="text/javascript">
+	
+		 $(document).ready(function(){
+			  $('#contact').ajaxForm(function(data) {
+				 if (data==1){
+					 $('#success').fadeIn("slow");
+					 $('#bademail').fadeOut("slow");
+					 $('#badserver').fadeOut("slow");
+					 $('#contact').resetForm();
+					 }
+				 else if (data==2){
+						 $('#badserver').fadeIn("slow");
+					  }
+				 else if (data==3)
+					{
+					 $('#bademail').fadeIn("slow");
+					}
+					});
+				
+				
+				 });
+		</script>
+
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://www.atlantbh.com/feed/" />
+	<link rel="alternate" type="text/xml" title="RSS .92" href="http://www.atlantbh.com/feed/rss/" />
+	<link rel="alternate" type="application/atom+xml" title="Atom 1.0" href="http://www.atlantbh.com/feed/atom/" />
+
+	<link rel="pingback" href="http://www.atlantbh.com/xmlrpc.php" />
+		<link rel='archives' title='February 2012' href='http://www.atlantbh.com/2012/02/' />
+	<link rel='archives' title='January 2012' href='http://www.atlantbh.com/2012/01/' />
+		<link rel="alternate" type="application/rss+xml" title="Atlantbh :: Software Development, Hadoop, Big Data, Cloud, Outsourcing &raquo; Amazon Elastic MapReduce &#8211; Part 2 (Amazon S3 Input Format) Comments Feed" href="http://www.atlantbh.com/amazon-elastic-mapreduce-part-2/feed/" />
+<link rel='stylesheet' id='admin-bar-css'  href='http://www.atlantbh.com/wp-includes/css/admin-bar.css?ver=20111209' type='text/css' media='all' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.atlantbh.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.atlantbh.com/wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='HBase backup, anyone?' href='http://www.atlantbh.com/hbase-backup-anyone/' />
+<link rel='next' title='Apache Solr &#8211; Slow queries and frequent terms' href='http://www.atlantbh.com/apache-solr-slow-queries-and-frequent-terms/' />
+<meta name="generator" content="WordPress 3.3.1" />
+<link rel='canonical' href='http://www.atlantbh.com/amazon-elastic-mapreduce-part-2/' />
+<link rel='shortlink' href='http://www.atlantbh.com/?p=667' />
+<link rel='stylesheet' id='wop-css'  href='http://www.atlantbh.com/wp-content/plugins/widgets-on-pages/wop.css' type='text/css' media='all' /><style type="text/css" media="print">#wpadminbar { display:none; }</style>
+<style type="text/css" media="screen">
+	html { margin-top: 28px !important; }
+	* html body { margin-top: 28px !important; }
+</style>
+<meta id="syntaxhighlighteranchor" name="syntaxhighlighter-version" content="3.1.3" />
+<script type="text/javascript">
+    
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-27737240-1']);
+      _gaq.push(['_trackPageview']);
+    
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    
+    </script></head>
+<body>
+<!----><div id="fb-root"></div>
+<script type="text/javascript">(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=159688644135159";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>			
+<!-- begin mainWrapper <div id='cebit'><a href="http://www.b2match.com/futurematch/profiles/403" target="_blank"><img src="http://www.atlantbh.com/wp-content/uploads/2012/01/cebit7.png" border="0" title="Cebit" /></a></div> -->
+<div id='cebit'><a href="http://www.b2match.com/futurematch/profiles/403" target="_blank"><img src="http://www.atlantbh.com/wp-content/uploads/2012/01/cebit7.png" border="0" title="Cebit" /></a></div>
+<div id="mainWrapper"><!---->
+	<!-- begin wrapper -->
+	<div id="wrapper">
+		<!-- begin header-->
+			<div id="header">
+			<div id="logo">
+            <a href="http://www.atlantbh.com/">
+             				<img src="http://cms.atlantbh.com/wp-content/uploads/2012/01/abh_logo_main.png" alt="Atlantbh :: Software Development, Outsourcing, Consulting" />
+                          </a>
+			</div>
+			<!-- begin top menu -->
+			<div id="topMenuCont" class="clearfix"><ul id="menu-main-menu" class="menu"><li id="menu-item-23" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-23"><a title="about-us" href="http://www.atlantbh.com/">ABOUT US</a></li>
+<li id="menu-item-43" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-43"><a title="services" href="http://www.atlantbh.com/services/">SERVICES</a></li>
+<li id="menu-item-44" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-44"><a title="clients" href="http://www.atlantbh.com/clients/">CLIENTS</a></li>
+<li id="menu-item-22" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-22"><a title="expertise" href="http://www.atlantbh.com/expertise/">EXPERTISE</a></li>
+<li id="menu-item-21" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-21"><a title="methodology" href="http://www.atlantbh.com/methodologies/">METHODOLOGIES</a></li>
+<li id="menu-item-107" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-107"><a title="careers" href="http://www.atlantbh.com/careers/">CAREERS</a></li>
+<li id="menu-item-42" class="menu-item menu-item-type-post_type menu-item-object-page current_page_parent menu-item-42"><a title="blog" href="http://www.atlantbh.com/blog/">BLOG</a></li>
+<li id="menu-item-19" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-19"><a title="contact-us" href="http://www.atlantbh.com/contact-us/">CONTACT US</a></li>
+</ul></div>			<!-- end top menu -->
+			
+			<!-- social links 
+			<ul id="socialLinks">
+                                 				<li>
+                <a href="http://twitter.com/atlantbh" title="Twitter"><img src="http://www.atlantbh.com/wp-content/themes/atlantbh/images/ico_twitter.png" alt="Twitter" /></a></li>                 				<li>
+                <a href="http://www.facebook.com/AtlantBH" title="Facebook"><img src="http://www.atlantbh.com/wp-content/themes/atlantbh/images/ico_facebook.png" alt="Facebook" /></a></li>				<li><a href="http://www.atlantbh.com/feed/" title="RSS" class="rssTag"><img src="http://www.atlantbh.com/wp-content/themes/atlantbh/images/ico_rss.png" alt="Feeds" /></a></li>
+			</ul>
+			 end social links -->
+			</div>
+		<!-- end header http://fragmentsofcreations.fragmentsofcreations.net/edin/wp-content/uploads/2012/01/careers.jpg-->
+<article>
+<div id="headerimg2"><div id="hText2"><span>Welcome to our <span style="color:#EE3124;">BLOG</span>.<br/>Get the latest scoop or just <span style="color:#EE3124;">follow</span> and <span style="color:#EE3124;">discuss</span> our latest <span style="color:#EE3124;">studies</span>.</span></div><div id="hTag2"><div id="hTagInner"><span><h10><a href="/blog/">BLOG</a></h10></span></div></div></div>
+
+	<!-- begin content -->
+			<div id="content" class="clearfix" >
+<!-- begin col left -->
+	<div id="colLeft" class="white">	
+    <!-- begin colLeftInner -->	
+	<div id="colLeftInner" class="clearfix">
+				<!-- begin post -->        
+        <div class="blogPost">
+        				<div class="date">Feb<br /><span>10</span></div>
+                            <h2><a href="http://www.atlantbh.com/amazon-elastic-mapreduce-part-2/">Amazon Elastic MapReduce &#8211; Part 2 (Amazon S3 Input Format)</a></h2>
+                            <div class="meta">
+                                By <span class="author">Samir ELJAZOVIĆ</span> &nbsp;//&nbsp;  <a href="http://www.atlantbh.com/category/big-data/" title="View all posts in Big Data" rel="category tag">Big Data</a>, <a href="http://www.atlantbh.com/category/big-data/hadoop-as-service/" title="View all posts in Hadoop as service" rel="category tag">Hadoop as service</a>  &nbsp;//&nbsp;  <a href="http://www.atlantbh.com/amazon-elastic-mapreduce-part-2/#respond" title="Comment on Amazon Elastic MapReduce &#8211; Part 2 (Amazon S3 Input Format)">No Comments</a>                            </div>
+						<p id="LC1">In previous article &#8220;<a title="Amazon Elastic MapReduce – Part 1" href="http://www.atlantbh.com/amazon-elastic-mapreduce-part-1/">Amazon Elastic MapReduce &#8211; Part 1</a>&#8221; we explained basic steps on how to create and setup small Hadoop cluster on Amazon EMR together with instructions on how to run custom MapReduce job. The focus of  this article is going to be the method for accessing the files stored on Amazon S3 from MapReduce job. For that purpose, new library called &#8220;emr-s3-io&#8221; has been created and presented here. &#8220;emr-s3-io&#8221; library provides set of custom Hadoop input format implementations based on Amazon S3 API for effective processing huge number of files on Amazon S3 in Hadoop MapReduce jobs.</p>
+<h2>Problem</h2>
+<p id="LC3">Apache Hadoop platform (including MapReduce framework) is created to process smaller number of very huge files (file sizes in GBs and TBs) rather than huge number of small size (size in KBs and MBs). Standard Hadoop file input format is very inefficient when it comes to working with huge number of small files. We can use directory or some file name pattern to specify input to MapReduce job but it will result in huge number of mappers being submitted for that job. If the work that mappers are going perform is not time consuming (for example calling other systems, heavy processing such as image and video processing, etc), each mapper will finish its work relatively fast. The amount of time required to setup and cleanup each mappers can easily become too big when compared to time needed for mapper to process the data. This ratio can be reduced by reusing JVMs between mappers running on same physical machine in Hadoop cluster, but it still can be significantly high.</p>
+<h2 id="LC22">Solution</h2>
+<p id="LC23">Hadoop MapReduce job uses input formats and input splits as a mechanism to split the input data into potentially equal subsets of data. The number of subsets (input splits) will directly determine the total number of mappers that will be submitted for the job. From implementation perspective, InputFormat&#8217;s method getSplits() is responsible for generating the list of input splits which are going to be used as input for each mapper.</p>
+<p>Let&#8217;s take for example Hadoop&#8217;s FileInputFormat class. By default this class is going to create one input split for each HDFS block of job&#8217;s input file. Another example is HBase&#8217;s TableInputFormat class which creates one mapper per each HBase region of underlying table.</p>
+<p>In our case, we want to process data (files) stored on Amazon S3 service. We could use standard Hadoop FileInuputFormat but because all above being said, we need to came up with better solution. The natural choice is to create custom Hadoop Input Format implementation that will work best with data from Amazon S3.</p>
+<p>When working with files stored on Amazon S3 we have to consider following:</p>
+<div id="LC32">
+<ul>
+<li>The number of files stored in S3 bucket can be practically unlimited</li>
+<li>The size of the files can be anything from few KBs to several GBs</li>
+<li>Files can be accessed either by their full name (sort of direct access by key) or by name prefix (sort of scan access)</li>
+<li>There is no concept of &#8220;blocks&#8221; similar to HDFS data blocks so data locality is not possible</li>
+<li>The access time for each file should be the same (at least in theory)</li>
+</ul>
+<h2>Implementation</h2>
+<p>There are 4 important concepts in Hadoop when it comes to implementing custom input formats to read the data from non-standard data sources (for example, text or Hadoop sequence files) and those are:</p>
+<ol>
+<li><strong>Model</strong></li>
+<li><strong>Input format</strong></li>
+<li><strong>Input split</strong></li>
+<li><strong>Record reader</strong></li>
+</ol>
+<p>Model is a set of classes which we&#8217;re going to use as supported key and value types in our input formats. Input format, input split and record reader are Hadoop classes which we have to extend with our custom implementation.</p>
+<h3>Model (S3 Object and Object Summary Writables)</h3>
+<p><a href="http://aws.amazon.com/sdkforjava/" target="_blank">Amazon WS SDK for Java</a> defines interfaces and simple model for accessing various Amazon web services including S3. There are two classes which are especially important for us:</p>
+<ul>
+<li><strong><a href="http://docs.amazonwebservices.com/AWSJavaSDK/latest/javadoc/com/amazonaws/services/s3/model/S3Object.html" target="_blank">S3Object</a></strong> - Represents an object stored in Amazon S3. This object contains the data content and the object metadata stored by Amazon S3, such as content type, content length, etc.</li>
+<li><strong><a href="http://docs.amazonwebservices.com/AWSJavaSDK/latest/javadoc/com/amazonaws/services/s3/model/S3ObjectSummary.html" target="_blank">S3ObjectSummary</a></strong>- Contains the summary of an object stored in an Amazon S3 bucket. This object doesn&#8217;t contain the object&#8217;s full metadata or any of its contents.</li>
+</ul>
+</div>
+<p id="LC37">S3 Object and Object Summary Writables</p>
+<p>The first step for us is to make S3Object and S3ObjectSummary classes ready for Hadoop. What that means? All classes that we want to use either as key or value types in MapReduce job must implement <a href="http://hadoop.apache.org/common/docs/current/api/index.html?org/apache/hadoop/io/Writable.html" target="_blank">org.apache.hadoop.io.Writable</a> interface. For types to be used as keys another interface must be implemented &#8211; <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Comparable.html?is-external=true" target="_blank">java.lang.Comparable</a>. These two interfaces are combined into one &#8211; <a href="http://hadoop.apache.org/common/docs/current/api/org/apache/hadoop/io/WritableComparable.html" target="_blank">org.apache.hadoop.io.WritableComparable</a>. Our classes will extend S3Object, S3ObjectSummary and implement Writable and WritableComparable interfaces respectively.</p>
+<p>Here is an example of S3ObjectWritable model classes:</p>
+<pre class="brush: java; title: ; notranslate" title="">
+/**
+ * Implementation of {@link WritableComparable} interface for {@link S3Object}
+ * class
+ *
+ * @author seljaz
+ *
+ */
+public class S3ObjectWritable extends S3Object implements WritableComparable&lt;S3Object&gt; {
+	ByteBuffer inBuffer, outBuffer;
+
+	@Override
+	public void readFields(DataInput in) throws IOException {
+		this.setBucketName(Text.readString(in));
+		this.setKey(Text.readString(in));
+		// Metadata
+		this.getObjectMetadata().setContentLength(in.readLong());
+		// ...
+		// Content
+		int size = WritableUtils.readVInt(in);
+		inBuffer = ByteBuffer.allocate(size);
+		in.readFully(inBuffer.array());
+		setObjectContent(new ByteArrayInputStream(inBuffer.array()));
+	}
+
+	@Override
+	public void write(DataOutput out) throws IOException {
+		Text.writeString(out, getBucketName());
+		Text.writeString(out, getKey());
+		// Object metadata
+		out.writeLong(getObjectMetadata().getContentLength());
+		// ...
+		// Read bytes from into outBuffer
+		outBuffer = ByteBuffer.allocate((int) getObjectMetadata().getContentLength());
+		getObjectContent().read(outBuffer.array());
+		// write size and content
+		WritableUtils.writeVInt(out, outBuffer.capacity());
+		out.write(outBuffer.array());
+	}
+
+	@Override
+	public int compareTo(S3Object o) {
+		if (getBucketName().compareTo(o.getBucketName()) == 0) {
+			return getKey().compareTo(o.getKey());
+		} else {
+			return getBucketName().compareTo(o.getBucketName());
+		}
+	}
+
+	@Override
+	public String toString() {
+		return String.format(&quot;[bucketName=%s, key=%s]&quot;, getBucketName(), getKey());
+	}
+}
+</pre>
+<h3 id="LC40">Input format (S3 Object and S3 Object Summary input formats)</h3>
+<p>Abstract generic class S3InputFormat is a base class for our S3Object and S3ObjectSummary input formats, and  implements getSplit() method which splits the S3 objects (keys or files) into key subsets of eventually equal size by defining start and end key for each segment.</p>
+<p>To determine the start and end keys for input splits, all keys must be read by S3 input format code and equal key segments are calculated using configurable &#8221;Number of keys per mapper&#8221; property. This property defines the maximal number of S3 keys that one input split can contain.<br />
+There is also an option to specify &#8220;Key prefix&#8221; property to limit the keys to the subset of keys in the bucket.</p>
+<p>There are two sub-classes of abstract S3InputFormat class:</p>
+<ul>
+<li><strong>S3ObjectInputFormat</strong></li>
+<li><strong>S3ObjectSummaryInputFormat</strong></li>
+</ul>
+<p>S3ObjectInputFormat is typed with S3ObjectSummaryWritable and S3ObjectWritable as key and value types respectively while S3ObjectSummaryInputFormat is typed with Text and S3ObjectSummaryWritable as key and value types respectively. Under the hood, these two input formats use different record readers for this purpose.</p>
+<p>Here&#8217;s the code for S3ObjectInputFormat:</p>
+<pre class="brush: java; title: ; notranslate" title="">
+
+/**
+ * S3 object input format. The purpose of this input format class is to read
+ * keys from Amazon S3 service in form of (key, value) = (
+ * {@link S3ObjectSummaryWritable}, {@link S3ObjectWritable})
+ *
+ * @author seljaz
+ *
+ */
+public class S3ObjectInputFormat extends S3InputFormat&lt;S3ObjectSummaryWritable, S3ObjectWritable&gt; {
+
+	public S3ObjectInputFormat() throws IOException {
+		super();
+	}
+
+	@Override
+	public RecordReader&lt;S3ObjectSummaryWritable, S3ObjectWritable&gt; createRecordReader(InputSplit split,
+			TaskAttemptContext context) throws IOException, InterruptedException {
+
+		return new S3ObjectRecordReader();
+	}
+}
+</pre>
+<h3>Input split (S3 Input split)</h3>
+<p>Input split is a definition of the subset of the data that one mapper is going to process. As it was already mentioned, Input format&#8217;s getSplits() method creates list of input splits so, when combined, they cover complete input data set. In our case, input data set is a set of S3 objects (keys) defined by: bucket name and key prefix.</p>
+<p>To combine input splits it is important to know the boundaries of each input split. We achieved this by defining <strong>marker</strong> and <strong>last key</strong> for input split. Marker serves as non-inclusive first key of the input split while last key is inclusive last key of the input split.</p>
+<p>As Input split is generated by InputFormat class running on client side before job is being submitted to JobTracker, it must implement Writable interface so it can be safely sent trough configuration to mapper instance running on different TaskTracker nodes in cluster.</p>
+<p>Here&#8217;s the S3InputSplit implementation:</p>
+<pre class="brush: java; title: ; notranslate" title="">
+/**
+ * S3 Input split class
+ *
+ * This class defines a subset of keys from Amazon S3 bucket. Following
+ * attributes define input split: bucket name, prefix, marker and last key.
+ * Combination of marker, prefix and last key is used to select only subset of
+ * keys from Amazon S3 bucket. As keys in bucket are sorted alphabetically so
+ * defining marker (or start key) and last key (or end key) we can define
+ * interval of keys as input split. Key used as a marker is non-inclusive while
+ * last key is.
+ *
+ * @author seljaz
+ *
+ */
+public class S3InputSplit extends InputSplit implements Writable {
+
+	static Logger LOG = LoggerFactory.getLogger(S3InputSplit.class);
+
+	String bucketName;
+	String keyPrefix;
+	String marker;
+	String lastKey;
+	int size;
+
+	public String getMarker() {
+		return marker;
+	}
+
+	public void setMarker(String marker) {
+		this.marker = marker;
+	}
+
+	public String getBucketName() {
+		return bucketName;
+	}
+
+	public void setBucketName(String bucketName) {
+		this.bucketName = bucketName;
+	}
+
+	public String getKeyPrefix() {
+		return keyPrefix;
+	}
+
+	public void setKeyPrefix(String keyPrefix) {
+		this.keyPrefix = keyPrefix;
+	}
+
+	public String getLastKey() {
+		return lastKey;
+	}
+
+	public void setLastKey(String lastKey) {
+		this.lastKey = lastKey;
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
+	}
+
+	S3InputSplit() {
+	}
+
+	@Override
+	public long getLength() throws IOException, InterruptedException {
+		return size;
+	}
+
+	@Override
+	public String[] getLocations() throws IOException, InterruptedException {
+		return new String[] {};
+	}
+
+	@Override
+	public void write(DataOutput out) throws IOException {
+		Text.writeString(out, getBucketName());
+		Text.writeString(out, getKeyPrefix());
+		Text.writeString(out, getMarker() != null ? getMarker() : &quot;&quot;);
+		Text.writeString(out, getLastKey());
+		WritableUtils.writeVInt(out, getSize());
+	}
+
+	@Override
+	public void readFields(DataInput in) throws IOException {
+		setBucketName(Text.readString(in));
+		setKeyPrefix(Text.readString(in));
+		setMarker(Text.readString(in));
+		setLastKey(Text.readString(in));
+		setSize(WritableUtils.readVInt(in));
+	}
+
+	@Override
+	public String toString() {
+		return String.format(&quot;[Bucket=%s, Prefix=%s, Marker=%s, LastKey=%s, Size=%d], &quot;, getBucketName(),
+				getKeyPrefix(), getMarker(), getLastKey(), getSize());
+	}
+}</pre>
+<h3>Record reader (S3 Object and S3 Object Summary record readers)</h3>
+<p>The purpose of RecordReader class in Hadoop is to read records from single input split and populate key and value objects to be read by mapper&#8217;s map() method. Record readers must also take care of input split boundaries so no record is read by no more than one record reader.</p>
+<p>Another generic abstract class &#8211; S3RecordReader &#8211; is created to be used as base record reader implementation for our input formats. There are two sub classes of S3RecordReader:</p>
+<ul>
+<li><strong>S3ObjectRecordReader</strong> &#8211; typed with S3ObjectSummaryWritable and S3ObjectWritable as key and value types respectively</li>
+<li><strong>S3ObjectSummaryRecordReader</strong> - typed with Text and S3ObjectSummaryWritable as key and value types respectively</li>
+</ul>
+<p>Here&#8217;s S3ObjectRecordReader code:</p>
+<pre class="brush: java; title: ; notranslate" title="">
+/**
+ * Record reader for reading ({@link S3ObjectSummaryWritable}, {@link S3ObjectWritable}) as (key, value) pairs
+ * from underlying S3 Input Split
+ *
+ * @author seljaz
+ *
+ */
+public class S3ObjectRecordReader extends S3RecordReader&lt;S3ObjectSummaryWritable, S3ObjectWritable&gt; {
+	S3Object object;
+
+	public S3ObjectRecordReader() {
+		outValue = new S3ObjectWritable();
+		outKey = new S3ObjectSummaryWritable();
+	}
+
+	@Override
+	public boolean nextKeyValue() throws IOException, InterruptedException {
+		// we have read another record
+		if (super.nextKeyValue()) {
+			object = reader.getObject(currentKey);
+
+			// poupulate key
+			outKey.setBucketName(currentKey.getBucketName());
+			outKey.setETag(currentKey.getETag());
+			outKey.setKey(currentKey.getKey());
+			outKey.setLastModified(currentKey.getLastModified());
+			outKey.setOwner(currentKey.getOwner());
+			outKey.setSize(currentKey.getSize());
+			outKey.setStorageClass(currentKey.getStorageClass());
+
+			//populate value
+			outValue.setBucketName(object.getBucketName());
+			outValue.setKey(object.getKey());
+			outValue.setObjectContent(object.getObjectContent());
+			outValue.setObjectMetadata(object.getObjectMetadata());
+
+			return true;
+		} else {
+			return false;
+		}
+	}
+}
+</pre>
+<h2>Result</h2>
+<p>Final result of this work is library called &#8220;<a href="https://github.com/ATLANTBH/emr-s3-io" target="_blank">emr-s3-io</a>&#8221; hosted on github.</p>
+<p>There are few things that are planned to be added to library in future. Some of them are:</p>
+<ul>
+<li>create S3OutputFormat &#8211; Hadoop output format for writing job&#8217;s result directly to Amazon S3</li>
+<li>more jDoc</li>
+<li>better jUnit coverage</li>
+</ul>
+<h2>Summary</h2>
+<p>In this article we have covered what is all required to create custom implementation of Hadoop input format for reading the objects from Amazon S3 as key-value pairs. In next article of this series we are going to show how these input formats can be used in Hadoop map reduce job.</p>
+                        <!--<div class="postTags"></?php the_tags(); ?></div>-->
+						
+		</div>
+		        <!-- post author -->
+   <!--    <div class="postauthor">
+				</?php echo userphoto_the_author_thumbnail(); ?>
+                
+                <h4>Author: <a href="</?php the_author_url(); ?>">
+                </?php the_author_firstname(); ?> </?php the_author_lastname(); ?></a></h4>
+                
+                </?php the_author_description(); ?>
+                
+                <p><a href="</?php bloginfo('url'); ?>/?author=</?php the_author_ID(); ?>">
+                </?php the_author_firstname(); ?> </?php the_author_lastname(); ?> has written </?php the_author_posts(); ?> articles for us.</a></p>
+                
+        </div><br/>-->
+        <!-- end post author -->
+<div class="fb-like" data-send="true" data-width="340" data-show-faces="false"></div>
+<!-- Place this tag where you want the +1 button to render -->
+<g:plusone annotation="inline" width="200"></g:plusone>
+<!-- Place this render call where appropriate -->
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+<a href="https://twitter.com/share" class="twitter-share-button" data-via="atlantbh" data-size="large">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+	<div class="fb-comments" data-href="http://www.atlantbh.com/amazon-elastic-mapreduce-part-2/" data-num-posts="2" data-width="650"></div>
+		<!-- end post -->
+		<!-- Social Sharing Icons -->
+	<!--	<div class="social">
+		<strong>Share this article:</strong>
+				<a href="http://twitter.com/home/?status=</?php the_title(); ?> : </?php the_permalink(); ?>" title="Tweet this!">
+				<img src="</?php bloginfo('template_directory'); ?>/images/twitter.png" alt="Tweet this!" /></a>				
+				<a href="http://www.stumbleupon.com/submit?url=</?php the_permalink(); ?>&amp;amp;title=</?php the_title(); ?>" title="StumbleUpon.">
+				<img src="</?php bloginfo('template_directory'); ?>/images/stumbleupon.png" alt="StumbleUpon" /></a>
+				<a href="http://digg.com/submit?phase=2&amp;amp;url=</?php the_permalink(); ?>&amp;amp;title=</?php the_title(); ?>" title="Digg this!">
+				<img src="</?php bloginfo('template_directory'); ?>/images/digg.png" alt="Digg This!" /></a>				
+				<a href="http://del.icio.us/post?url=</?php the_permalink(); ?>&amp;amp;title=</?php the_title(); ?>" title="Bookmark on Delicious.">
+				<img src="</?php bloginfo('template_directory'); ?>/images/delicious.png" alt="Bookmark on Delicious" /></a>
+				<a href="http://www.facebook.com/sharer.php?u=</?php the_permalink();?>&amp;amp;t=</?php the_title(); ?>" title="Share on Facebook.">
+				<img src="</?php bloginfo('template_directory'); ?>/images/facebook.png" alt="Share on Facebook" id="sharethis-last" /></a>
+				
+			</div>-->
+		
+		<!-- end Social Sharing Icons -->	
+		
+		
+    <!--  ?php < comments_template(); ?>-->
+						</div>
+                <!-- end colLeftInner -->
+
+ 			</div>
+			<!-- end col left -->
+	
+<!-- begin colRight -->
+	<div id="colRight" class="clearfix">
+	<!-- begin search box 
+	<div id="searchBox" class="clearfix">
+		<form id="searchform" action="http://www.atlantbh.com/" method="get">
+			<label for="s">&nbsp;</label><input id="s" type="text" name="s" value=""/>
+
+			<input id="searchsubmit" type="submit" value=""/>
+		</form>
+	</div>
+	 end search box -->
+    	<div class="boxRight"><h2>Our Services</h2><div class="boxRightInner">
+	<ul class='xoxo blogroll'>
+<li><a href="/services/automated-quality-assurance/">AUTOMATED QUALITY ASSURANCE</a></li>
+<li><a href="/services/big-data/">BIG DATA (HADOOP)</a></li>
+<li><a href="/services/lucene-search/">LUCENE SEARCH</a></li>
+<li><a href="/services/mobile-development/">MOBILE DEVELOPMENT</a></li>
+
+	</ul>
+</div></div>
+<div class="boxRight"><h2>Blog Categories</h2><div class="boxRightInner">		<ul>
+	<li class="cat-item cat-item-18"><a href="http://www.atlantbh.com/category/qa/" title="View all posts filed under Automated QA / Testing">Automated QA / Testing</a> (5)
+</li>
+	<li class="cat-item cat-item-45"><a href="http://www.atlantbh.com/category/big-data/bi-analytics/" title="View all posts filed under BI and Analytics">BI and Analytics</a> (2)
+</li>
+	<li class="cat-item cat-item-12"><a href="http://www.atlantbh.com/category/big-data/" title="View all posts filed under Big Data">Big Data</a> (8)
+</li>
+	<li class="cat-item cat-item-46"><a href="http://www.atlantbh.com/category/big-data/hadoop-as-service/" title="View all posts filed under Hadoop as service">Hadoop as service</a> (3)
+</li>
+	<li class="cat-item cat-item-36"><a href="http://www.atlantbh.com/category/lucene-search/" title="View all posts filed under Lucene Search">Lucene Search</a> (2)
+</li>
+	<li class="cat-item cat-item-41"><a href="http://www.atlantbh.com/category/qa/regression-and-monitoring/" title="View all posts filed under Regression and Monitoring">Regression and Monitoring</a> (1)
+</li>
+	<li class="cat-item cat-item-43"><a href="http://www.atlantbh.com/category/qa/testing-extensions/" title="View all posts filed under Testing Extensions">Testing Extensions</a> (2)
+</li>
+	<li class="cat-item cat-item-42"><a href="http://www.atlantbh.com/category/qa/testing-tools/" title="View all posts filed under Testing Tools">Testing Tools</a> (4)
+</li>
+		</ul>
+</div></div>		<div class="boxRight">		<h2>RECENT POSTS</h2><div class="boxRightInner">		<ul>
+				<li><a href="http://www.atlantbh.com/bad-vs-good-search-experience/" title="Bad vs Good Search Experience">Bad vs Good Search Experience</a></li>
+				<li><a href="http://www.atlantbh.com/atlantbh-regression-suite/" title="Regression Suite">Regression Suite</a></li>
+				<li><a href="http://www.atlantbh.com/apache-solr-slow-queries-and-frequent-terms/" title="Apache Solr &#8211; Slow queries and frequent terms">Apache Solr &#8211; Slow queries and frequent terms</a></li>
+				<li><a href="http://www.atlantbh.com/amazon-elastic-mapreduce-part-2/" title="Amazon Elastic MapReduce &#8211; Part 2 (Amazon S3 Input Format)">Amazon Elastic MapReduce &#8211; Part 2 (Amazon S3 Input Format)</a></li>
+				<li><a href="http://www.atlantbh.com/hbase-backup-anyone/" title="HBase backup, anyone?">HBase backup, anyone?</a></li>
+				<li><a href="http://www.atlantbh.com/hadoop-powered-bi-and-analytics-part-2/" title="Hadoop powered BI and Analytics &#8211; Part 2">Hadoop powered BI and Analytics &#8211; Part 2</a></li>
+				<li><a href="http://www.atlantbh.com/hadoop-powered-bi-and-analytics/" title="Hadoop powered BI and Analytics &#8211; Part 1">Hadoop powered BI and Analytics &#8211; Part 1</a></li>
+				<li><a href="http://www.atlantbh.com/jmeter-components/" title="Jmeter components">Jmeter components</a></li>
+				<li><a href="http://www.atlantbh.com/how-to-build-optimal-hadoop-cluster/" title="How To Build Optimal Hadoop Cluster">How To Build Optimal Hadoop Cluster</a></li>
+				<li><a href="http://www.atlantbh.com/amazon-elastic-mapreduce-part-1/" title="Amazon Elastic MapReduce &#8211; Part 1">Amazon Elastic MapReduce &#8211; Part 1</a></li>
+				</ul>
+		</div></div> <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td colspan="2"><h2><a href="/contact-us/">CONTACT US</a></h2>
+<strong>Our sales and support staff are standing by</strong></td>
+  </tr>
+  <tr>
+    <td width="20"><img class="alignleft size-full wp-image-427" title="Call Us" src="http://www.atlantbh.com/wp-content/uploads/2010/10/phone1.png" alt="" width="15" height="14" border="0" /></td>
+    <td><strong>+387.33.716550</strong></td>
+  </tr>
+  <tr>
+    <td width="20"><a href="/contact-us/"><img class="alignleft size-full wp-image-424" title="Contact Us" src="http://www.atlantbh.com/wp-content/uploads/2010/10/email.png" alt="" width="15" height="14" border="0" /></a></td>
+    <td><a href="/contact-us/">Contact Us</a></td>
+  </tr>
+  <tr>
+    <td colspan="2" height="20"><hr></td>
+  </tr>
+  <tr>
+    <td colspan="2">
+<strong>Come and visit us at</strong><br/>
+
+<em>Zmaja od Bosne 74<br/>
+71000 Sarajevo<br/>
+Bosnia and Herzegovina</em>
+  </tr>
+  <tr>
+    <td colspan="2" height="20"><hr /></td>
+  </tr>
+  <tr>
+    <td colspan="2"><strong>Keep in touch</strong><br/>
+    <a href="http://www.facebook.com/AtlantBH"><img class="alignnone size-full wp-image-258" title="Atlantbh Facebook Page" src="http://www.atlantbh.com/wp-content/uploads/2012/01/fb_icon.png" alt="" width="24" height="24" border="0" /></a> <a href="http://twitter.com/#!/atlantbh"><img class="alignnone size-full wp-image-249" title="Atlantbh on Twitter" src="http://www.atlantbh.com/wp-content/uploads/2012/01/tw_icon.png" alt="" width="24" height="24" border="0" /></a> <a href="http://www.linkedin.com/company/atlantbh"><img class="alignnone size-full wp-image-261" title="Atlantbh on LinkedIn" src="http://www.atlantbh.com/wp-content/uploads/2012/01/ln_icon.png" alt="" width="24" height="24" border="0" /></a>
+<a class="more" title="Contact Us" href="/contact-us/"><span style="font-family: Verdana;">→</span> Contact Us</a>
+    </td>
+  </tr>
+</table>	
+	</div>
+	<!-- end colRight -->
+	
+
+
+</div></article>
+		<!-- end content -->	
+	</div>
+	<!-- end wrapper -->
+	<!-- begin footer -->        
+
+	<div id="footer" class="clear fix">
+		<div class="page_footer">
+				<img src="/wp-content/uploads/2012/01/abh_logo_gray.png"/>
+				<div class="copyright">&copy; Copyright 1996 - 2012, Atlantbh d.o.o., &reg; All Rights Reserved</div>
+				<div class="contact_info">
+                	<strong>Follow:</strong>
+                    <div class="fb-like" data-href="http://www.facebook.com/AtlantBH" data-send="false" data-layout="button_count" data-width="160" data-show-faces="false" data-colorscheme="dark"></div>
+                    <a href="https://twitter.com/atlantbh" class="twitter-follow-button" data-show-count="false" data-show-screen-name="false">Follow @atlantbh</a>
+					<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+					<script src="http://platform.linkedin.com/in.js" type="text/javascript"></script>
+					<script type="IN/CompanyProfile" data-id="1485526" data-format="hover" data-text="Atlantbh"></script>
+                </div>                
+				
+				<div class="contact_info">
+                	<strong>Contact:</strong>
+                    <p>phone: +387.33.716550</p>
+                    <p>fax: +387.33.716551</p>
+                    <p>email: <a href="mailto:contact@atlantbh.com">contact@atlantbh.com</a></p>
+                </div>                
+                
+				<div class="contact_info">
+                	<strong>Career:</strong>
+                    <p>phone: +387.33.716557</p>
+                    <p>email: <a href="mailto:jobs@atlantbh.com">jobs@atlantbh.com</a></p>
+                </div>
+			</div>
+	</div>
+	
+
+	<!-- end footer -->
+</div>
+<!-- end mainWrapper -->
+<script type='text/javascript' src='http://www.atlantbh.com/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shCore.js?ver=3.0.83c'></script>
+<script type='text/javascript' src='http://www.atlantbh.com/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushJava.js?ver=3.0.83c'></script>
+<script type='text/javascript'>
+	(function(){
+		var corecss = document.createElement('link');
+		var themecss = document.createElement('link');
+		var corecssurl = "http://www.atlantbh.com/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.83c";
+		if ( corecss.setAttribute ) {
+				corecss.setAttribute( "rel", "stylesheet" );
+				corecss.setAttribute( "type", "text/css" );
+				corecss.setAttribute( "href", corecssurl );
+		} else {
+				corecss.rel = "stylesheet";
+				corecss.href = corecssurl;
+		}
+		document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
+		var themecssurl = "http://www.atlantbh.com/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeDefault.css?ver=3.0.83c";
+		if ( themecss.setAttribute ) {
+				themecss.setAttribute( "rel", "stylesheet" );
+				themecss.setAttribute( "type", "text/css" );
+				themecss.setAttribute( "href", themecssurl );
+		} else {
+				themecss.rel = "stylesheet";
+				themecss.href = themecssurl;
+		}
+		//document.getElementById("syntaxhighlighteranchor").appendChild(themecss);
+		document.getElementsByTagName("head")[0].insertBefore( themecss, document.getElementById("syntaxhighlighteranchor") );
+	})();
+	SyntaxHighlighter.config.strings.expandSource = '+ expand source';
+	SyntaxHighlighter.config.strings.help = '?';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = 'Can\'t find brush for: ';
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = 'Brush wasn\'t configured for html-script option: ';
+	SyntaxHighlighter.defaults['auto-links'] = false;
+	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
+	SyntaxHighlighter.defaults['toolbar'] = false;
+	SyntaxHighlighter.all();
+</script>
+<script type='text/javascript' src='http://www.atlantbh.com/wp-includes/js/admin-bar.js?ver=20111130'></script>
+		<div id="wpadminbar" class="nojq nojs" role="navigation">
+			<div class="quicklinks">
+				<ul id="wp-admin-bar-root-default" class="ab-top-menu">
+		<li id="wp-admin-bar-wp-logo" class="menupop"><a class="ab-item" tabindex="10" aria-haspopup="true" href="http://www.atlantbh.com/wp-admin/about.php" title="About WordPress"><span class="ab-icon"></span></a><div class="ab-sub-wrapper"><ul id="wp-admin-bar-wp-logo-default" class="ab-submenu">
+		<li id="wp-admin-bar-about" class=""><a class="ab-item" tabindex="10" href="http://www.atlantbh.com/wp-admin/about.php">About WordPress</a>		</li></ul><ul id="wp-admin-bar-wp-logo-external" class="ab-sub-secondary ab-submenu">
+		<li id="wp-admin-bar-wporg" class=""><a class="ab-item" tabindex="10" href="http://wordpress.org">WordPress.org</a>		</li>
+		<li id="wp-admin-bar-documentation" class=""><a class="ab-item" tabindex="10" href="http://codex.wordpress.org">Documentation</a>		</li>
+		<li id="wp-admin-bar-support-forums" class=""><a class="ab-item" tabindex="10" href="http://wordpress.org/support/">Support Forums</a>		</li>
+		<li id="wp-admin-bar-feedback" class=""><a class="ab-item" tabindex="10" href="http://wordpress.org/support/forum/requests-and-feedback">Feedback</a>		</li></ul></div>		</li>
+		<li id="wp-admin-bar-site-name" class="menupop"><a class="ab-item" tabindex="10" aria-haspopup="true" href="http://www.atlantbh.com/wp-admin/">Atlantbh :: Software Development, Hadoop&hellip;</a><div class="ab-sub-wrapper"><ul id="wp-admin-bar-site-name-default" class="ab-submenu">
+		<li id="wp-admin-bar-dashboard" class=""><a class="ab-item" tabindex="10" href="http://www.atlantbh.com/wp-admin/">Dashboard</a>		</li></ul></div>		</li>
+		<li id="wp-admin-bar-comments" class=""><a class="ab-item" tabindex="10" href="http://www.atlantbh.com/wp-admin/edit-comments.php" title="0 comments awaiting moderation"><span class="ab-icon"></span><span id="ab-awaiting-mod" class="ab-label awaiting-mod pending-count count-0">0</span></a>		</li>
+		<li id="wp-admin-bar-new-content" class="menupop"><a class="ab-item" tabindex="10" aria-haspopup="true" href="http://www.atlantbh.com/wp-admin/post-new.php" title="Add New"><span class="ab-icon"></span><span class="ab-label">New</span></a><div class="ab-sub-wrapper"><ul id="wp-admin-bar-new-content-default" class="ab-submenu">
+		<li id="wp-admin-bar-new-post" class=""><a class="ab-item" tabindex="10" href="http://www.atlantbh.com/wp-admin/post-new.php">Post</a>		</li>
+		<li id="wp-admin-bar-new-media" class=""><a class="ab-item" tabindex="10" href="http://www.atlantbh.com/wp-admin/media-new.php">Media</a>		</li></ul></div>		</li></ul><ul id="wp-admin-bar-top-secondary" class="ab-top-secondary ab-top-menu">
+		<li id="wp-admin-bar-search" class=" admin-bar-search"><div class="ab-item ab-empty-item" tabindex="-1"><form action="http://www.atlantbh.com/" method="get" id="adminbarsearch"><input class="adminbar-input" name="s" id="adminbar-search" tabindex="10" type="text" value="" maxlength="150" /><input type="submit" class="adminbar-button" value="Search"/></form></div>		</li>
+		<li id="wp-admin-bar-my-account" class="menupop with-avatar"><a class="ab-item" tabindex="10" aria-haspopup="true" href="http://www.atlantbh.com/wp-admin/profile.php" title="My Account">Howdy, Emir DIZDAREVIC<img alt='' src='http://0.gravatar.com/avatar/857ee9e9851b353120a56689666118a4?s=16&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D16&amp;r=G' class='avatar avatar-16 photo' height='16' width='16' /></a><div class="ab-sub-wrapper"><ul id="wp-admin-bar-user-actions" class=" ab-submenu">
+		<li id="wp-admin-bar-user-info" class=""><a class="ab-item" tabindex="-1" href="http://www.atlantbh.com/wp-admin/profile.php"><img alt='' src='http://0.gravatar.com/avatar/857ee9e9851b353120a56689666118a4?s=64&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64&amp;r=G' class='avatar avatar-64 photo' height='64' width='64' /><span class='display-name'>Emir DIZDAREVIC</span><span class='username'>emird</span></a>		</li>
+		<li id="wp-admin-bar-edit-profile" class=""><a class="ab-item" tabindex="10" href="http://www.atlantbh.com/wp-admin/profile.php">Edit My Profile</a>		</li>
+		<li id="wp-admin-bar-logout" class=""><a class="ab-item" tabindex="10" href="http://www.atlantbh.com/wp-login.php?action=logout&#038;_wpnonce=f5c4ea87f9">Log Out</a>		</li></ul></div>		</li></ul>			</div>
+		</div>
+
+		</body>
+</html>
