@@ -23,7 +23,7 @@ public class XPathIndexerProperties {
 		this.xPathIndexerPropertiesFieldList = xPathIndexerPropertiesFieldList;
 	}
 	
-	@XmlAttribute(name="urlFilterRegex", required=false)
+	@XmlAttribute(name="pageUrlFilterRegex", required=false)
 	public String getPageUrlFilterRegex() {
 		return pageUrlFilterRegex;
 	}
