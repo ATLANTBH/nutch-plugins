@@ -7,6 +7,12 @@ import org.w3c.dom.Node;
 
 public class FilterUtils {
 	
+  /**
+   * Delimeter to separate the property and the property field so we know
+   * which property the field is associated to
+   */
+  public static final String DELIMTER = "|*|";
+  
 	/**
 	 * Returns the same value. If null returns the defaultValue.
 	 * 
