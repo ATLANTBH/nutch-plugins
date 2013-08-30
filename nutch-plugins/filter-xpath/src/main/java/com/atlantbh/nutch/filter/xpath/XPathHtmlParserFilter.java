@@ -146,52 +146,62 @@ public class XPathHtmlParserFilter implements HtmlParseFilter {
 					List<XPathIndexerPropertiesField> xPathIndexerPropertiesFieldList = xPathIndexerProperties.getXPathIndexerPropertiesFieldList();
 					for(XPathIndexerPropertiesField xPathIndexerPropertiesField : xPathIndexerPropertiesFieldList) {
 						
-						// Evaluate xpath			
-						XPath xPath = new DOMXPath(xPathIndexerPropertiesField.getXPath());
-						List nodeList = xPath.selectNodes(cleanedXmlHtml);
-						
-						// Trim?
-						boolean trim = FilterUtils.getNullSafe(xPathIndexerPropertiesField.getTrimXPathData(), true);
-						
-						if(FilterUtils.getNullSafe(xPathIndexerPropertiesField.isConcat(), false)) {
-								
-							// Iterate trough all found nodes
-							String value = new String();
-							String concatDelimiter = FilterUtils.getNullSafe(xPathIndexerPropertiesField.getConcatDelimiter(), "");
-							for (Object node : nodeList) {
-
-								// Extract data	
-								String tempValue = FilterUtils.extractTextContentFromRawNode(node);
-								tempValue = filterValue(tempValue, trim);
-								
-								// Concatenate tempValue to value
-								if(tempValue != null) {
-									if(value.isEmpty()) {
-										value = tempValue;
-									} else {
-										value = value + concatDelimiter + tempValue;
-									}
-								}
-							}
-							
-							// Add the extracted data to meta prepended with the property id
-							if(value != null) {
-								metadata.add(xPathIndexerProperties.getId() + FilterUtils.DELIMITER + xPathIndexerPropertiesField.getName(), value);
-							}
-							
-						} else {
-							
-							// Iterate trough all found nodes
-							for (Object node : nodeList) {
-
-							  // Add the extracted data to meta prepended with the property id
-								String value = FilterUtils.extractTextContentFromRawNode(node);					
-								value = filterValue(value, trim);
-								if(value != null) {
-									metadata.add(xPathIndexerProperties.getId() + FilterUtils.DELIMITER + xPathIndexerPropertiesField.getName(), value);
-								}
-							}
-						}
+					  
+					  if( xPathIndexerPropertiesField.getValue() != null ) {
+					    
+					    // If there is any set fields for this property field, add to metadata
+					    metadata.add(xPathIndexerProperties.getId() + FilterUtils.DELIMITER + xPathIndexerPropertiesField.getName(), xPathIndexerPropertiesField.getValue());
+					    
+					  } else if( xPathIndexerPropertiesField.getXPath() != null ) {
+					  
+  						// If no set field, Evaluate xpath if it is filled in
+					      
+  						XPath xPath = new DOMXPath(xPathIndexerPropertiesField.getXPath());
+  						List nodeList = xPath.selectNodes(cleanedXmlHtml);
+  						
+  						// Trim?
+  						boolean trim = FilterUtils.getNullSafe(xPathIndexerPropertiesField.getTrimXPathData(), true);
+  						
+  						if(FilterUtils.getNullSafe(xPathIndexerPropertiesField.isConcat(), false)) {
+  								
+  							// Iterate trough all found nodes
+  							String value = new String();
+  							String concatDelimiter = FilterUtils.getNullSafe(xPathIndexerPropertiesField.getConcatDelimiter(), "");
+  							for (Object node : nodeList) {
+  
+  								// Extract data	
+  								String tempValue = FilterUtils.extractTextContentFromRawNode(node);
+  								tempValue = filterValue(tempValue, trim);
+  								
+  								// Concatenate tempValue to value
+  								if(tempValue != null) {
+  									if(value.isEmpty()) {
+  										value = tempValue;
+  									} else {
+  										value = value + concatDelimiter + tempValue;
+  									}
+  								}
+  							}
+  							
+  							// Add the extracted data to meta prepended with the property id
+  							if(value != null) {
+  								metadata.add(xPathIndexerProperties.getId() + FilterUtils.DELIMITER + xPathIndexerPropertiesField.getName(), value);
+  							}
+  							
+  						} else {
+  							
+  							// Iterate trough all found nodes
+  							for (Object node : nodeList) {
+  
+  							  // Add the extracted data to meta prepended with the property id
+  								String value = FilterUtils.extractTextContentFromRawNode(node);					
+  								value = filterValue(value, trim);
+  								if(value != null) {
+  									metadata.add(xPathIndexerProperties.getId() + FilterUtils.DELIMITER + xPathIndexerPropertiesField.getName(), value);
+  								}
+  							}
+  						}
+					  }
 						
 					}
 				}
