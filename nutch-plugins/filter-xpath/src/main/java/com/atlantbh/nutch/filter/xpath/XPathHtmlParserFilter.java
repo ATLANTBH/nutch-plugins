@@ -176,7 +176,7 @@ public class XPathHtmlParserFilter implements HtmlParseFilter {
 							
 							// Add the extracted data to meta prepended with the property id
 							if(value != null) {
-								metadata.add(xPathIndexerProperties.getId() + FilterUtils.DELIMTER + xPathIndexerPropertiesField.getName(), value);
+								metadata.add(xPathIndexerProperties.getId() + FilterUtils.DELIMITER + xPathIndexerPropertiesField.getName(), value);
 							}
 							
 						} else {
@@ -188,7 +188,7 @@ public class XPathHtmlParserFilter implements HtmlParseFilter {
 								String value = FilterUtils.extractTextContentFromRawNode(node);					
 								value = filterValue(value, trim);
 								if(value != null) {
-									metadata.add(xPathIndexerProperties.getId() + FilterUtils.DELIMTER + xPathIndexerPropertiesField.getName(), value);
+									metadata.add(xPathIndexerProperties.getId() + FilterUtils.DELIMITER + xPathIndexerPropertiesField.getName(), value);
 								}
 							}
 						}
