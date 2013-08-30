@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 public class XPathIndexerProperties {
 
+  private String id;
 	private String pageUrlFilterRegex;
 	private Boolean trimPageContentFilterXPathData;
 	private String pageContentFilterXPath;
@@ -22,8 +23,16 @@ public class XPathIndexerProperties {
 	public XPathIndexerProperties(List<XPathIndexerPropertiesField> xPathIndexerPropertiesFieldList) {
 		this.xPathIndexerPropertiesFieldList = xPathIndexerPropertiesFieldList;
 	}
+	@XmlAttribute(name="id", required=true)
+	public String getId() {
+	  return id;
+	}
 	
-	@XmlAttribute(name="urlFilterRegex", required=false)
+	public void setId(String id) {
+	  this.id = id;
+	}
+	
+	@XmlAttribute(name="pageUrlFilterRegex", required=false)
 	public String getPageUrlFilterRegex() {
 		return pageUrlFilterRegex;
 	}
