@@ -7,11 +7,8 @@ import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.log4j.Logger;
@@ -46,6 +43,8 @@ public class XPathFilterConfiguration {
 		return null;
 	}
 	
+	// needed for XML binding
+	@SuppressWarnings("unused")
 	private XPathFilterConfiguration() {}
 	
 	public XPathFilterConfiguration(List<XPathIndexerProperties> xPathIndexerPropertiesList) {		

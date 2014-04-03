@@ -2,7 +2,6 @@ package com.atlantbh.nutch.filter.xpath;
 
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.w3c.dom.Node;
 
 public class FilterUtils {

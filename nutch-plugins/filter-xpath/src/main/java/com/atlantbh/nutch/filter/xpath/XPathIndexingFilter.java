@@ -35,7 +35,6 @@ import com.atlantbh.nutch.filter.xpath.config.XPathIndexerPropertiesField;
 public class XPathIndexingFilter implements IndexingFilter {
 
 	// Constants
-	private static final String CONFIG_FILE_PROPERTY = "parser.xmlhtml.file";
 	private static final Logger log = Logger.getLogger(XPathIndexingFilter.class);
 	
 	// Configuration
@@ -110,14 +109,17 @@ public class XPathIndexingFilter implements IndexingFilter {
 								} 
 								
 								break;
-							default:	
+							default:
+								log.warn(String.format("Type '%s' not supported, value will be interpreted as String", type));
 								value = stringValue;
 								break;
 						} 
 						
 						// Add field
 						doc.add(xPathIndexerPropertiesField.getName(), value);
-						
+						if (log.isDebugEnabled()) {
+							log.debug(String.format("Added field with name %s and value %s", xPathIndexerPropertiesField.getName(), value));
+						}
 					}
 				}
 			}

@@ -24,6 +24,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
 
 import com.atlantbh.nutch.filter.xpath.XPathIndexingFilter;
+import com.ibm.icu.util.GregorianCalendar;
 
 @RunWith(BlockJUnit4ClassRunner.class)
 public class XPathIndexingFilterTest {
@@ -33,7 +34,7 @@ public class XPathIndexingFilterTest {
 	
 	private static final String[] testStringArray = {"test1", "test2", "test3"};
 	private static final Float[] testFloatArray = {1.2f, 2.3f};
-	private static final Date[] testDateArray = {new Date(2001, 3, 15), new Date(2003, 8, 21)};
+	private static final Date[] testDateArray = {new GregorianCalendar(2001, 3, 15).getTime(), new GregorianCalendar(2003, 8, 21).getTime()};
 	private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
 	
 	@Before

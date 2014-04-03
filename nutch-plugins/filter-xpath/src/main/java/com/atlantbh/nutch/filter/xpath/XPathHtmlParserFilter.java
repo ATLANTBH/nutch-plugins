@@ -111,6 +111,7 @@ public class XPathHtmlParserFilter implements HtmlParseFilter {
 		initConfig(); 
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@Override
 	public ParseResult filter(Content content, ParseResult parseResult, HTMLMetaTags metaTags, DocumentFragment doc) {
 		Metadata metadata = parseResult.get(content.getUrl()).getData().getParseMeta();
@@ -221,6 +222,7 @@ public class XPathHtmlParserFilter implements HtmlParseFilter {
 	}
 	
 	
+	@SuppressWarnings("rawtypes")
 	private boolean pageToProcess(XPathIndexerProperties xPathIndexerProperties, Document cleanedXmlHtml, String url) throws JaxenException {
 
 		boolean processPage = true;

@@ -1,8 +1,6 @@
 package com.atlantbh.nutch.filter.xpath.config;
 
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
-
 
 public class XPathIndexerPropertiesField {
 	
