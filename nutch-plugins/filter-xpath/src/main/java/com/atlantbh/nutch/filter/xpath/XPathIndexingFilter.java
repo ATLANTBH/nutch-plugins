@@ -73,7 +73,7 @@ public class XPathIndexingFilter implements IndexingFilter {
 				for(XPathIndexerPropertiesField xPathIndexerPropertiesField : xPathIndexerPropertiesFieldList) {
 					
 					FieldType type = xPathIndexerPropertiesField.getType();
-					for(String stringValue : metadata.getValues(xPathIndexerPropertiesField.getName())) {
+					for(String stringValue : metadata.getValues(xPathIndexerProperties.getId() + FilterUtils.DELIMITER + xPathIndexerPropertiesField.getName())) {
 						
 						Object value;
 						switch(type) {

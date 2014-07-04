@@ -11,6 +11,7 @@ public class XPathIndexerPropertiesField {
 	private Boolean trimXPathData;
 	private Boolean concat;
 	private String concatDelimiter;
+	private String value;
 	
 	public XPathIndexerPropertiesField() {}
 
@@ -29,7 +30,7 @@ public class XPathIndexerPropertiesField {
 		this.name = name;
 	}
 
-	@XmlAttribute(name="xPath", required=true)
+	@XmlAttribute(name="xPath", required=false)
 	public String getXPath() {
 		return xPath;
 	}
@@ -81,4 +82,14 @@ public class XPathIndexerPropertiesField {
 	public void setConcatDelimiter(String concatDelimiter) {
 		this.concatDelimiter = concatDelimiter;
 	}
+	
+	@XmlAttribute(name="value", required=false)
+	public String getValue() {
+	  return value;
+	}
+	
+	public void setValue(String value) {
+	  this.value = value;
+	}
+	
 }
