@@ -175,9 +175,9 @@ public class XPathHtmlParserFilter implements HtmlParseFilter {
 								}
 							}
 							
-							// Add the extracted data to meta
+							// Add the extracted data to meta prepended with the property id
 							if(value != null) {
-								metadata.add(xPathIndexerPropertiesField.getName(), value);
+								metadata.add(xPathIndexerProperties.getId() + FilterUtils.DELIMTER + xPathIndexerPropertiesField.getName(), value);
 							}
 							
 						} else {
@@ -185,11 +185,11 @@ public class XPathHtmlParserFilter implements HtmlParseFilter {
 							// Iterate trough all found nodes
 							for (Object node : nodeList) {
 
-								// Add the extracted data to meta
+							  // Add the extracted data to meta prepended with the property id
 								String value = FilterUtils.extractTextContentFromRawNode(node);					
 								value = filterValue(value, trim);
 								if(value != null) {
-									metadata.add(xPathIndexerPropertiesField.getName(), value);	
+									metadata.add(xPathIndexerProperties.getId() + FilterUtils.DELIMTER + xPathIndexerPropertiesField.getName(), value);
 								}
 							}
 						}
